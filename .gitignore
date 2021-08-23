@@ -45,7 +45,7 @@ screencaps/
 reports/
 
 # Compiled altered tomofast binary
-tomofast3D
+tomofastx
 
 # Original v1.1 tomofast-x binary
 tomofast3D_original
