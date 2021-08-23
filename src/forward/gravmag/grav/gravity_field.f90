@@ -1,12 +1,30 @@
 
 !========================================================================
 !
-!                          T o m o f a s t - x
-!                        -----------------------
+!                    T O M O F A S T X  Version 1.0
+!                  ----------------------------------
 !
-!           Authors: Vitaliy Ogarko, Jeremie Giraud, Roland Martin.
+!              Main authors: Vitaliy Ogarko, Roland Martin,
+!                   Jeremie Giraud, Dimitri Komatitsch.
+! CNRS, France, and University of Western Australia.
+! (c) CNRS, France, and University of Western Australia. January 2018
 !
-!               (c) 2021 The University of Western Australia.
+! This software is a computer program whose purpose is to perform
+! capacitance, gravity, magnetic, or joint gravity and magnetic tomography.
+!
+! This program is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 2 of the License, or
+! (at your option) any later version.
+!
+! This program is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+! GNU General Public License for more details.
+!
+! You should have received a copy of the GNU General Public License along
+! with this program; if not, write to the Free Software Foundation, Inc.,
+! 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 !
 ! The full text of the license is available in file "LICENSE".
 !
@@ -49,6 +67,7 @@ subroutine graviprism_full(par, grid, Xdata, Ydata, Zdata, LineX, LineY, LineZ, 
   ! Local variables.
   double precision, parameter :: twopi = 2.d0 * pi
   double precision, parameter, dimension(2) :: signo = (/-1.0d0, 1.0d0/)
+  double precision, parameter :: eps = 1.d-8
 
   double precision :: Xdatad, Ydatad, Zdatad
   double precision :: lamb_over_sigmad
@@ -110,13 +129,28 @@ subroutine graviprism_full(par, grid, Xdata, Ydata, Zdata, LineX, LineY, LineZ, 
           arg6 = Rs + ZZ(M)
 
           if (arg4 <= 0.) then
-            call exit_MPI("Bad point field (arg4).", myrank, 0)
+          	print *, "Bad point field detected for arg4:", arg4
+          	arg4 = arg4 + eps
+          	print *, "avoiding imaginery solution by perturbing the arg by eps=", eps
+          	if (arg4 <= 0.) then
+            	call exit_MPI("Point field still bad (arg4).", myrank, 0)
+            endif
           endif
           if (arg5 <= 0.) then
-            call exit_MPI("Bad point field (arg5).", myrank, 0)
+          	print *, "Bad point field detected for arg5:", arg5
+          	arg4 = arg5 + eps
+          	print *, "avoiding imaginery solution by perturbing the arg by eps=", eps
+            if (arg5 <= 0.) then
+            	call exit_MPI("Point field still bad (arg5).", myrank, 0)
+            endif
           endif
           if (arg6 <= 0.) then
-            call exit_MPI("Bad point field (arg6).", myrank, 0)
+          	print *, "Bad point field detected for arg6:", arg6
+          	arg6 = arg6 + eps
+          	print *, "avoiding imaginery solution by perturbing the arg by eps=", eps
+            if (arg6 <= 0.) then
+            	call exit_MPI("Point field still bad (arg6).", myrank, 0)
+            endif
           endif
 
           arg4 = log(arg4)
