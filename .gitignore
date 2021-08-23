@@ -32,3 +32,23 @@
 *.app
 
 output/
+
+##### Sharmbox Branch #####
+# Local data
+data/gravmag/kim/
+
+# Local parameter files
+parfiles/
+
+# Reports
+screencaps/
+reports/
+
+# Compiled altered tomofast binary
+tomofast3D
+
+# Original v1.1 tomofast-x binary
+tomofast3D_original
+
+# Other
+temp_paraview/
